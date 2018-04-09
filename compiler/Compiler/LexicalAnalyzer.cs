@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace AquaScript
+namespace AquaScript.Compiler
 {
     /// <summary>
     /// Lexical Analyzer class.
@@ -261,7 +261,7 @@ namespace AquaScript
             }
             else if (nextChar.Equals('-'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Subtraction);
+                token = new Token(nextChar.ToString(), TokenCode.Subtraction, tokenLine, tokenColumn);
                 GetNextChar();
 
                 if (nextChar.Equals('-'))

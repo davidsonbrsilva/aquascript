@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace AquaScript
+namespace AquaScript.Compiler
 {
     /// <summary>
     /// A list of valid tokens for the project.

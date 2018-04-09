@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AquaScript
+namespace AquaScript.Compiler
 {
     /// <summary>
     /// Structure to store a generated token.

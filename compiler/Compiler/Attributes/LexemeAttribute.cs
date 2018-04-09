@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AquaScript
+namespace AquaScript.Compiler
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class LexemeAttribute : Attribute

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A124D420-09E9-449E-B5F8-5D09816DE7DF}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AquaScript</RootNamespace>
-    <AssemblyName>AquaScript</AssemblyName>
+    <RootNamespace>AquaScript.Compiler</RootNamespace>
+    <AssemblyName>aqua.compiler</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>AquaScript.Program</StartupObject>
+    <StartupObject>AquaScript.Compiler.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace AquaScript
+﻿namespace AquaScript.Compiler
 {
     [System.Serializable]
     public class InvalidTokenException : System.Exception
