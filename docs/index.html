@@ -423,14 +423,14 @@
          </ul>
          
       </p><br><p style="font-size: 14px; font-weight:bold"><a name="expression">expression:</a></p>
-      <img border="0" src="diagram/expression.png" height="320" width="486" usemap="#expression.map"><map name="expression.map">
-         <area shape="rect" coords="69,17,111,49" href="#side" title="side">
-         <area shape="rect" coords="251,49,293,81" href="#side" title="side"></map>
+      <img border="0" src="diagram/expression.png" height="376" width="342" usemap="#expression.map"><map name="expression.map">
+         <area shape="rect" coords="49,89,91,121" href="#side" title="side">
+         <area shape="rect" coords="231,121,273,153" href="#side" title="side"></map>
       
       <p>
          
          <div class="ebnf"><pre><a href="#expression" title="expression" shape="rect">expression</a>
-         ::= ( <a href="#side" title="side" shape="rect">side</a> ( ( '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | '!=' | '=' ) <a href="#side" title="side" shape="rect">side</a> )? ( 'and' | 'or' ) )*</pre></div>
+         ::= <a href="#side" title="side" shape="rect">side</a> ( ( '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | '!=' | '=' ) <a href="#side" title="side" shape="rect">side</a> )? ( ( 'and' | 'or' ) <a href="#side" title="side" shape="rect">side</a> ( ( '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | '!=' | '=' ) <a href="#side" title="side" shape="rect">side</a> )? )*</pre></div>
          
       </p>
       

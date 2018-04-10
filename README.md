@@ -28,7 +28,68 @@ A sintaxe de AquaScript foi construída para ser bem simples e familiar aos prog
 Veja a seguir a definição da sintaxe em Backus-Naur Form:
 
 ```
-açsdjfalsdjf
+
+program  ::= statement*
+
+statement
+         ::= if
+           | for
+           | attribuition
+           | singlinecomment
+           | multilinecomment
+           | ( increment | decrement | return | read | write | 'break' ) ';'
+
+if       ::= 'if' '(' expression ')' body
+
+for      ::= 'for' '(' attribuition? ';' expression? ';' attribuition? ')' body
+
+attribuition
+         ::= 'id' ':' ( function | expression ';' )
+
+singlinecomment
+         ::= '//' [^\n]*
+
+multilinecomment
+         ::= '/*' ( [^*] | '*'+ [^*/] )* '*'* '*/'
+
+increment
+         ::= 'id' '++'
+
+decrement
+         ::= 'id' '--'
+
+return   ::= 'return' expression?
+
+read     ::= 'read' 'id'
+
+write    ::= 'write' expression
+
+function ::= '(' param? ')' body
+
+expression
+         ::= side ( ( '<' | '>' | '<=' | '>=' | '!=' | '=' ) side )? ( ( 'and' | 'or' ) side ( ( '<' | '>' | '<=' | '>=' | '!=' | '=' ) side )? )*
+
+param    ::= 'id' ( ',' 'id' )*
+
+body     ::= '{' statement* '}'
+
+side     ::= term ( ( '+' | '-' ) term )*
+
+term     ::= unaryexpr ( ( '*' | '/' | '%' ) unaryexpr )*
+
+unaryexpr
+         ::= ( '+' | '-' )? factor
+
+factor   ::= bool
+           | 'number'
+           | 'text'
+           | 'id'
+           | 'null'
+           | '(' expression ')'
+
+bool     ::= 'true'
+           | 'false'
+
 ```
 
 Consulte o [Diagrama de Sintaxe](https://davidsonbsilva.github.io/aquascript)  de AquaScript gerado a partir da definição descrita acima.
