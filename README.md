@@ -235,7 +235,7 @@ write is_prime(7) Saída: true
 
 ## Contribuição
 
-Para contribuir com o projeto, leia o nosso [Guia de Contribuição](CONTRIBUTING.md) antes de fazer um Pull Request.
+Para contribuir com o projeto, leia o [Guia de Contribuição](CONTRIBUTING.md) antes de fazer um Pull Request.
 
 ## Contato
 
