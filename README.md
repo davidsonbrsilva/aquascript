@@ -8,7 +8,7 @@ Apesar do termo Script em seu nome, é uma linguagem de programação compilada.
 
 ## Definição
 
-AquaScript é uma linguagem bem simples que possui uma definição típica das linguagem C-Like. Veja a seguir a notação permitida:
+AquaScript é uma linguagem bem simples que possui uma definição típica das linguagens C-Like. Veja a seguir a notação permitida:
 
 - Controladores de fluxo `if`, `else` e `for`;
 - Operadores aritméticos `+`, `-`, `*`, `/` e `%`;
