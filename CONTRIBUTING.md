@@ -1,6 +1,6 @@
 # Guia de Contribuição para AquaScript
 
-Olá! Estou feliz que você tem interesse em colaborar para o projeto. Antes de submeter suas contribuições, tenha certeza de reservar um momento para ler os seguintes tópicos:
+Olá! Estou feliz que você tem interesse em colaborar no projeto. Antes de submeter suas contribuições, tenha certeza de reservar um momento para ler os seguintes tópicos:
 
 - [Código de Conduta](CODE_OF_CONDUCT.md)
 - [Diretrizes de _Issues_](#diretrizes-de-issues)

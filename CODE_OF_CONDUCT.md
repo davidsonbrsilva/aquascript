@@ -45,4 +45,4 @@ Este Código de Conduta é adaptado de [Contributor Covenant][homepage], versão
 [homepage]: http://contributor-covenant.org
 [version]: http://contributor-covenant.org/version/1/4/
 
-_Este Código de Conduta está em sua fase inicial e pode sofre mudanças a qualquer momento._
+_Este Código de Conduta está em sua fase inicial e pode sofrer mudanças a qualquer momento._

@@ -103,8 +103,8 @@ Variáveis em AquaScript são sempre inicializadas com algum valor. O operador d
 ```
 
 a: 3; // a recebe o valor 3 e é do tipo number
-b: 4.5 // b recebe o valor 4.5 e é do tipo number
-c: a + b // c agora vale 7.5
+b: 4.5; // b recebe o valor 4.5 e é do tipo number
+c: a + b; // c agora vale 7.5
 
 d: "Foo";
 e: "bar";

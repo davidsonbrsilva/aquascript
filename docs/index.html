@@ -182,17 +182,15 @@
       </p>
       
       <p>no references</p><br><p style="font-size: 14px; font-weight:bold"><a name="statement">statement:</a></p>
-      <img border="0" src="diagram/statement.png" height="476" width="266" usemap="#statement.map"><map name="statement.map">
+      <img border="0" src="diagram/statement.png" height="388" width="266" usemap="#statement.map"><map name="statement.map">
          <area shape="rect" coords="49,1,75,33" href="#if" title="if">
          <area shape="rect" coords="49,45,85,77" href="#for" title="for">
          <area shape="rect" coords="49,89,131,121" href="#attribuition" title="attribuition">
-         <area shape="rect" coords="49,133,169,165" href="#singlinecomment" title="singlinecomment">
-         <area shape="rect" coords="49,177,175,209" href="#multilinecomment" title="multilinecomment">
-         <area shape="rect" coords="69,221,147,253" href="#increment" title="increment">
-         <area shape="rect" coords="69,265,153,297" href="#decrement" title="decrement">
-         <area shape="rect" coords="69,309,125,341" href="#return" title="return">
-         <area shape="rect" coords="69,353,115,385" href="#read" title="read">
-         <area shape="rect" coords="69,397,119,429" href="#write" title="write"></map>
+         <area shape="rect" coords="69,133,147,165" href="#increment" title="increment">
+         <area shape="rect" coords="69,177,153,209" href="#decrement" title="decrement">
+         <area shape="rect" coords="69,221,125,253" href="#return" title="return">
+         <area shape="rect" coords="69,265,115,297" href="#read" title="read">
+         <area shape="rect" coords="69,309,119,341" href="#write" title="write"></map>
       
       <p>
          
@@ -200,8 +198,6 @@
          ::= <a href="#if" title="if" shape="rect">if</a>
            | <a href="#for" title="for" shape="rect">for</a>
            | <a href="#attribuition" title="attribuition" shape="rect">attribuition</a>
-           | <a href="#singlinecomment" title="singlinecomment" shape="rect">singlinecomment</a>
-           | <a href="#multilinecomment" title="multilinecomment" shape="rect">multilinecomment</a>
            | ( <a href="#increment" title="increment" shape="rect">increment</a> | <a href="#decrement" title="decrement" shape="rect">decrement</a> | <a href="#return" title="return" shape="rect">return</a> | <a href="#read" title="read" shape="rect">read</a> | <a href="#write" title="write" shape="rect">write</a> | 'break' ) ';'</pre></div>
          
       </p>
@@ -273,42 +269,6 @@
          <ul>
             
             <li><a href="#for" title="for">for</a></li>
-            
-            <li><a href="#statement" title="statement">statement</a></li>
-            
-         </ul>
-         
-      </p><br><p style="font-size: 14px; font-weight:bold"><a name="singlinecomment">singlinecomment:</a></p>
-      <img border="0" src="diagram/singlinecomment.png" height="68" width="258">
-      
-      <p>
-         
-         <div class="ebnf"><pre><a href="#singlinecomment" title="singlinecomment" shape="rect">singlinecomment</a>
-         ::= '//' [^\n]*</pre></div>
-         
-      </p>
-      
-      <p>referenced by:
-         
-         <ul>
-            
-            <li><a href="#statement" title="statement">statement</a></li>
-            
-         </ul>
-         
-      </p><br><p style="font-size: 14px; font-weight:bold"><a name="multilinecomment">multilinecomment:</a></p>
-      <img border="0" src="diagram/multilinecomment.png" height="152" width="530">
-      
-      <p>
-         
-         <div class="ebnf"><pre><a href="#multilinecomment" title="multilinecomment" shape="rect">multilinecomment</a>
-         ::= '/*' ( [^*] | '*'+ [^*/] )* '*'* '*/'</pre></div>
-         
-      </p>
-      
-      <p>referenced by:
-         
-         <ul>
             
             <li><a href="#statement" title="statement">statement</a></li>
             
