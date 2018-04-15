@@ -12,8 +12,9 @@ namespace AquaScript.Compiler
         // Private attributes
 
         private StreamReader reader;
-        private int line;
-        private int column;
+        private int lexicalCounter;
+        private int currentLine;
+        private int currentColumn;
         private int nextCharCode;
         private char nextChar;
         private int nextToken;
@@ -33,14 +34,10 @@ namespace AquaScript.Compiler
         /// <param name="path">Path of font file.</param>
         public LexicalAnalyzer(string path)
         {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException("Arquivo não encontrado.");
-            }
-
             reader = new StreamReader(path);
-            line = 1;
-            column = 1;
+            lexicalCounter = 0;
+            currentLine = 1;
+            currentColumn = 1;
             nextCharCode = reader.Read();
             nextChar = (char)nextCharCode;
             nextToken = -1;
@@ -51,15 +48,28 @@ namespace AquaScript.Compiler
 
         // Public methods
 
+        public Token LookAhead(Token current, int index)
+        {
+            index = Tokens.IndexOf(current) + index;
+
+            if (index >= Tokens.Count)
+            {
+                throw new TokenNotFoundException(string.Format("Attempting to read the parser to remove ambiguity after token {0} in line {1}, column {2}. No token was found.", Tokens[nextToken].Lexeme, Tokens[nextToken].Line, Tokens[nextToken].Column));
+            }
+
+            return Tokens[index];
+        }
+
         public Token Read()
         {
             nextToken++;
 
-            if (nextToken < Tokens.Count)
+            if (nextToken >= Tokens.Count)
             {
-                return Tokens[nextToken];
+                throw new EndOfStreamException("End of parser reading.");
             }
-            return null;
+
+            return Tokens[nextToken];
         }
 
         /// <summary>
@@ -67,26 +77,25 @@ namespace AquaScript.Compiler
         /// </summary>
         public void Tokenize()
         {
-            try
+            while (nextCharCode != -1)
             {
-                Token token = null;
-
-                while (true)
+                try
                 {
-                    token = GetToken();
-                    if (token != null)
-                    {
-                        Tokens.Add(token);
-                    }
+                    Token token = NextToken();
+                    Tokens.Add(token);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                catch (EndOfStreamException e)
+                {
+                    Console.WriteLine(e.Message);
                 }
             }
-            catch (EndOfStreamException e)
-            {
-                Console.WriteLine(e.Message);
-            }
 
-            Console.WriteLine("Esta foi a lista de tokens gerada:");
-            WriteTokensList();
+            //Console.WriteLine("Esta foi a lista de tokens gerada:");
+            //WriteTokensList();
         }
 
         /// <summary>
@@ -94,14 +103,14 @@ namespace AquaScript.Compiler
         /// </summary>
         public void WriteTokensList()
         {
-            string lexeme = "Lexema:";
-            string code = "Código:";
-            string line = "Linha:";
-            string column = "Coluna:";
+            string lexeme = "Lexeme:";
+            string code = "Code:";
+            string line = "Line:";
+            string column = "Column:";
 
             if (Tokens.Count == 0)
             {
-                Console.WriteLine("Nenhum token encontrado!");
+                Console.WriteLine("No token found.");
             }
             else
             {
@@ -109,19 +118,8 @@ namespace AquaScript.Compiler
 
                 foreach (Token token in Tokens)
                 {
-                    if (token.Code == TokenCode.Invalid)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-
                     Console.WriteLine(" {0,-14} {1,-19}{2,9}{3,10}", token.Lexeme, token.Code, token.Line, token.Column);
                 }
-
-                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -130,28 +128,28 @@ namespace AquaScript.Compiler
         /// <summary>
         /// Get the next char in the read stream.
         /// </summary>
-        private void GetNextChar()
+        private void NextChar()
         {
             nextCharCode = reader.Read();
             nextChar = (char)nextCharCode;
-            UpdateLineAndColumn();
+            UpdatePosition();
         }
 
         /// <summary>
         /// Controls the row and column change.
         /// </summary>
-        private void UpdateLineAndColumn()
+        private void UpdatePosition()
         {
             char nextChar = (char)nextCharCode;
 
             if (nextChar.Equals('\n'))
             {
-                column = 1;
-                line += 1;
+                currentColumn = 1;
+                currentLine += 1;
             }
             else
             {
-                column++;
+                currentColumn++;
             }
         }
 
@@ -159,33 +157,33 @@ namespace AquaScript.Compiler
         /// Get a token from the file.
         /// </summary>
         /// <returns></returns>
-        private Token GetToken()
+        public Token NextToken()
         {
             Token token = null;
             String lexeme = "";
 
             while (Char.IsWhiteSpace(nextChar))
             {
-                GetNextChar();
+                NextChar();
             }
-
-            int tokenLine = line;
-            int tokenColumn = column;
 
             if (nextCharCode == -1)
             {
-                throw new EndOfStreamException("Arquivo lido com sucesso!");
+                throw new EndOfStreamException("End of file reading.");
             }
+
+            int tokenLine = currentLine;
+            int tokenColumn = currentColumn;
 
             if (nextChar == '_' || Char.IsLetter(nextChar))
             {
                 lexeme += nextChar;
-                GetNextChar();
+                NextChar();
 
                 while (nextChar.Equals('_') || Char.IsLetterOrDigit(nextChar))
                 {
                     lexeme += nextChar;
-                    GetNextChar();
+                    NextChar();
                 }
 
                 token = new Token(lexeme, TokenCode.Id, tokenLine, tokenColumn);
@@ -194,213 +192,279 @@ namespace AquaScript.Compiler
             else if (Char.IsDigit(nextChar))
             {
                 lexeme += nextChar;
-                GetNextChar();
+                NextChar();
 
                 while (Char.IsDigit(nextChar))
                 {
                     lexeme += nextChar;
-                    GetNextChar();
+                    NextChar();
                 }
-
-                token = new Token(lexeme, TokenCode.Number, tokenLine, tokenColumn);
 
                 if (nextChar.Equals('.'))
                 {
                     lexeme += nextChar;
-                    GetNextChar();
+                    NextChar();
 
                     if (Char.IsDigit(nextChar))
                     {
                         lexeme += nextChar;
-                        GetNextChar();
+                        NextChar();
 
                         while (Char.IsDigit(nextChar))
                         {
                             lexeme += nextChar;
-                            GetNextChar();
+                            NextChar();
                         }
-
-                        token.Lexeme = lexeme;
                     }
                     else
                     {
-                        token = new Token(lexeme, TokenCode.Invalid, tokenLine, tokenColumn);
+                        lexicalCounter++;
+                        InvalidTokenError("Invalid token \"" + lexeme + "\".", tokenLine, tokenColumn);
                     }
                 }
+
+                token = new Token(lexeme, TokenCode.Number, tokenLine, tokenColumn);
             }
             else if (nextChar.Equals('"'))
             {
                 lexeme += nextChar;
-                GetNextChar();
+                NextChar();
 
                 while (nextChar != '"')
                 {
                     lexeme += nextChar;
-                    GetNextChar();
+                    NextChar();
 
                     if (nextCharCode == -1)
                     {
-                        throw new EndOfStreamException("Os valores das variáveis do tipo text devem ser envolvidos com aspas.");
+                        lexicalCounter++;
+                        throw new EndOfStreamException("Lexical error at line " + tokenLine + ", column " + tokenColumn + ": Variables of text type must be envolved with quotation marks (\").");
                     }
                 }
 
                 lexeme += nextChar;
                 token = new Token(lexeme, TokenCode.Text, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
             }
             else if (nextChar.Equals('+'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Addition, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.Plus, tokenLine, tokenColumn);
+                NextChar();
 
                 if (nextChar.Equals('+'))
                 {
                     token.Lexeme += nextChar.ToString();
-                    GetNextChar();
+                    token.Code = TokenCode.Increment;
+                    NextChar();
                 }
             }
             else if (nextChar.Equals('-'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Subtraction, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.Minus, tokenLine, tokenColumn);
+                NextChar();
 
                 if (nextChar.Equals('-'))
                 {
                     token.Lexeme += nextChar.ToString();
                     token.Code = TokenCode.Decrement;
-                    GetNextChar();
+                    NextChar();
                 }
             }
             else if (nextChar.Equals('*'))
             {
                 token = new Token(nextChar.ToString(), TokenCode.Multiplication, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
             }
             else if (nextChar.Equals('/'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Division, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
 
                 if (nextChar.Equals('/'))
                 {
-                    token = null;
-                    GetNextChar();
+                    NextChar();
 
-                    while (nextChar != '\n' || nextChar != -1)
+                    while (nextChar != '\n' && nextCharCode != -1)
                     {
-                        GetNextChar();
+                        NextChar();
                     }
+
+                    token = NextToken();
                 }
                 else if (nextChar.Equals('*'))
                 {
-                    token = null;
-                    GetNextChar();
+                    NextChar();
 
-                    while (nextChar != '*')
+                    while (true)
                     {
-                        GetNextChar();
+                        while (nextChar != '*' && nextCharCode != -1)
+                        {
+                            NextChar();
+                        }
 
                         if (nextCharCode == -1)
                         {
-                            throw new EndOfStreamException("É necessário fechar comentários de multiplas linhas com \"*/\".");
+                            lexicalCounter++;
+                            throw new EndOfStreamException("Lexical error at line " + tokenLine + ", column " + tokenColumn + ": Multiline comments must be finished with \"*/\".");
                         }
 
                         if (nextChar.Equals('*'))
                         {
-                            GetNextChar();
+                            NextChar();
+
+                            while (nextChar.Equals('*') && nextCharCode != -1)
+                            {
+                                NextChar();
+                            }
+
+                            if (nextCharCode == -1)
+                            {
+                                lexicalCounter++;
+                                throw new EndOfStreamException("Lexical error at line " + tokenLine + ", column " + tokenColumn + ": Multiline comments must be finished with \"*/\".");
+                            }
 
                             if (nextChar.Equals('/'))
                             {
-                                GetNextChar();
+                                NextChar();
+                                token = NextToken();
                                 break;
                             }
                         }
                     }
                 }
+                else
+                {
+                    token = new Token(nextChar.ToString(), TokenCode.Division, tokenLine, tokenColumn);
+                }
+            }
+            else if (nextChar.Equals('%'))
+            {
+                token = new Token(nextChar.ToString(), TokenCode.Module, tokenLine, tokenColumn);
+                NextChar();
             }
             else if (nextChar.Equals('<'))
             {
                 token = new Token(nextChar.ToString(), TokenCode.Less, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
 
                 if (nextChar.Equals('='))
                 {
                     token.Lexeme += nextChar;
                     token.Code = TokenCode.LessOrEqual;
-                    GetNextChar();
+                    NextChar();
                 }
             }
             else if (nextChar.Equals('>'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Higher, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.Greater, tokenLine, tokenColumn);
+                NextChar();
 
                 if (nextChar.Equals('='))
                 {
                     token.Lexeme += nextChar;
-                    token.Code = TokenCode.HigherOrEqual;
-                    GetNextChar();
+                    token.Code = TokenCode.GreaterOrEqual;
+                    NextChar();
                 }
             }
             else if (nextChar.Equals('='))
             {
                 token = new Token(nextChar.ToString(), TokenCode.Equal, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
             }
             else if (nextChar.Equals(':'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Attribuition, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.Colon, tokenLine, tokenColumn);
+                NextChar();
             }
             else if (nextChar.Equals('!'))
             {
                 token = new Token(nextChar.ToString(), TokenCode.Negation, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
 
                 if (nextChar.Equals('='))
                 {
                     token.Lexeme += nextChar;
                     token.Code = TokenCode.Different;
-                    GetNextChar();
+                    NextChar();
                 }
             }
             else if (nextChar.Equals('('))
             {
-                token = new Token(nextChar.ToString(), TokenCode.OpeningParenthesis, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.LeftParenthesis, tokenLine, tokenColumn);
+                NextChar();
             }
             else if (nextChar.Equals(')'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.ClosingParenthesis, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.RightParenthesis, tokenLine, tokenColumn);
+                NextChar();
             }
             else if (nextChar.Equals('{'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.OpeningBracket, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.LeftBracket, tokenLine, tokenColumn);
+                NextChar();
             }
             else if (nextChar.Equals('}'))
             {
-                token = new Token(nextChar.ToString(), TokenCode.ClosingBracket, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.RightBracket, tokenLine, tokenColumn);
+                NextChar();
             }
             else if (nextChar.Equals(';'))
             {
                 token = new Token(nextChar.ToString(), TokenCode.Semicolon, tokenLine, tokenColumn);
-                GetNextChar();
+                NextChar();
             }
             else if (nextChar.Equals(','))
             {
-                token = new Token(nextChar.ToString(), TokenCode.Colon, tokenLine, tokenColumn);
-                GetNextChar();
+                token = new Token(nextChar.ToString(), TokenCode.Comma, tokenLine, tokenColumn);
+                NextChar();
             }
             else
             {
-                token = new Token(nextChar.ToString(), TokenCode.Invalid, tokenLine, tokenColumn);
-                GetNextChar();
+                lexeme += nextChar;
+                NextChar();
+
+                while (IsInvalid(nextCharCode))
+                {
+                    lexeme += nextChar;
+                    NextChar();
+                }
+
+                lexicalCounter++;
+                InvalidTokenError("Invalid token \"" + lexeme + "\".", tokenLine, tokenColumn);
             }
 
             return token;
+        }
+
+        private bool IsInvalid(int charactereCode)
+        {
+            char charactere = (char)charactereCode;
+
+            if (Char.IsLetterOrDigit(charactere)
+                || Char.IsWhiteSpace(charactere)
+                || charactereCode == -1
+                || charactere == '_'
+                || charactere == '/'
+                || charactere == '*'
+                || charactere == '+'
+                || charactere == '-'
+                || charactere == ','
+                || charactere == ';'
+                || charactere == '('
+                || charactere == ')'
+                || charactere == '{'
+                || charactere == '}'
+                || charactere == ':'
+                || charactere == '!'
+                || charactere == '='
+                || charactere == '<'
+                || charactere == '>'
+                || charactere == '"'
+                )
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -417,6 +481,11 @@ namespace AquaScript.Compiler
                     return;
                 }
             }
+        }
+
+        private void InvalidTokenError(string message, int line, int column)
+        {
+            throw new InvalidTokenException(string.Format("Lexical error at line {0}, column {1}: {2}", line, column, message));
         }
     }
 }

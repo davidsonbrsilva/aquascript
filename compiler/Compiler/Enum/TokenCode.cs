@@ -27,13 +27,13 @@ namespace AquaScript.Compiler
         /// </summary>
         [Lexeme("break")]   Break,
         /// <summary>
-        /// Addition operator.
+        /// Plus operator.
         /// </summary>
-        [Lexeme("+")]       Addition,
+        [Lexeme("+")]       Plus,
         /// <summary>
-        /// Subtraction operator.
+        /// Minus operator.
         /// </summary>
-        [Lexeme("-")]       Subtraction,
+        [Lexeme("-")]       Minus,
         /// <summary>
         /// Multiplication operator.
         /// </summary>
@@ -67,21 +67,21 @@ namespace AquaScript.Compiler
         /// </summary>
         [Lexeme("for")]     For,
         /// <summary>
-        /// Code for opening bracket symbol.
+        /// Code for left bracket symbol.
         /// </summary>
-        [Lexeme("{")]       OpeningBracket,
+        [Lexeme("{")]       LeftBracket,
         /// <summary>
-        /// Code for closing bracket symbol.
+        /// Code for right bracket symbol.
         /// </summary>
-        [Lexeme("}")]       ClosingBracket,
+        [Lexeme("}")]       RightBracket,
         /// <summary>
-        /// Code for opening parenthesis symbol.
+        /// Code for left parenthesis symbol.
         /// </summary>
-        [Lexeme("(")]       OpeningParenthesis,
+        [Lexeme("(")]       LeftParenthesis,
         /// <summary>
-        /// Code for closing parenthesis symbol.
+        /// Code for right parenthesis symbol.
         /// </summary>
-        [Lexeme(")")]       ClosingParenthesis,
+        [Lexeme(")")]       RightParenthesis,
         /// <summary>
         /// Equal operator.
         /// </summary>
@@ -91,17 +91,17 @@ namespace AquaScript.Compiler
         /// </summary>
         [Lexeme("<=")]      LessOrEqual,
         /// <summary>
-        /// Higher or equal operator.
+        /// Greater or equal operator.
         /// </summary>
-        [Lexeme(">=")]      HigherOrEqual,
+        [Lexeme(">=")]      GreaterOrEqual,
         /// <summary>
         /// Less operator.
         /// </summary>
         [Lexeme("<")]       Less,
         /// <summary>
-        /// Higher operator.
+        /// Greater operator.
         /// </summary>
-        [Lexeme(">")]       Higher,
+        [Lexeme(">")]       Greater,
         /// <summary>
         /// Different operator.
         /// </summary>
@@ -129,27 +129,23 @@ namespace AquaScript.Compiler
         /// <summary>
         /// Numerical value.
         /// </summary>
-        [Lexeme("")]        Number,
+        [Lexeme("<number>")]        Number,
         /// <summary>
         /// Textual value.
         /// </summary>
-        [Lexeme("")]        Text,
+        [Lexeme("<text>")]        Text,
         /// <summary>
         /// Parameters separator.
         /// </summary>
-        [Lexeme(",")]       Colon,
+        [Lexeme(",")]       Comma,
         /// <summary>
         /// End of line separator.
         /// </summary>
         [Lexeme(";")]       Semicolon,
         /// <summary>
-        /// Invalid token.
-        /// </summary>
-        [Lexeme("")]        Invalid,
-        /// <summary>
         /// Attribuition operator.
         /// </summary>
-        [Lexeme(":")]       Attribuition,
+        [Lexeme(":")]       Colon,
         /// <summary>
         /// Code for identification lexeme.
         /// </summary>
@@ -157,7 +153,7 @@ namespace AquaScript.Compiler
         /// <summary>
         /// Code for identification lexeme.
         /// </summary>
-        [Lexeme("")]        Id
+        [Lexeme("<identifier>")]        Id
     }
 
     public static class TokenCodeExtensions

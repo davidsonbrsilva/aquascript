@@ -200,7 +200,7 @@ the_bigger: (x, y)
 	}
 }
 
-write the_bigger(5, 6.5) // Saída: 6.5
+write the_bigger(5, 6.5); // Saída: 6.5
 
 ``` 
 
@@ -214,7 +214,7 @@ is_prime: (x)
 
 	for (i: 0; i < x; i++)
 	{
-		if (x % i == 0)
+		if (x % i = 0)
 		{
 			count++;
 
@@ -228,8 +228,8 @@ is_prime: (x)
 	return true;
 }
 
-write is_prime(4) Saída: false
-write is_prime(7) Saída: true
+write is_prime(4); // Saída: false
+write is_prime(7); // Saída: true
 
 ```
 
