@@ -1,6 +1,6 @@
 # AquaScript
 
-![license](https://img.shields.io/github/license/davidsonbsilva/aquascript.svg) ![GitHub issues](https://img.shields.io/github/issues/davidsonbsilva/aquascript.svg)
+![license](https://img.shields.io/github/license/davidsonbsilva/aquascript.svg) ![GitHub issues](https://img.shields.io/github/issues/davidsonbrsilva/aquascript.svg)
 
 AquaScript é uma **linguagem de programação procedural**, desenvolvida para fins de aprendizado sobre teoria de compiladores. É bastante simples e não objetiva trazer novidades em relação às diversas linguagens já conhecidas, porém espera-se que atenda ao seu propósito. 
 
