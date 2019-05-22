@@ -92,7 +92,7 @@ bool     ::= 'true'
 
 ```
 
-Consulte o [Diagrama de Sintaxe](https://davidsonbsilva.github.io/aquascript)  de AquaScript gerado a partir da definição descrita acima.
+Consulte o [Diagrama de Sintaxe](https://davidsonbrsilva.github.io/aquascript)  de AquaScript gerado a partir da definição descrita acima.
 
 ## Exemplos
 
