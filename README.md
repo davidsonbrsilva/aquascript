@@ -1,6 +1,6 @@
 # AquaScript
 
-![license](https://img.shields.io/github/license/davidsonbsilva/aquascript.svg) ![Status](https://img.shields.io/badge/status-stopped-red)
+![License](https://img.shields.io/github/license/davidsonbsilva/aquascript.svg) ![Code Size](https://img.shields.io/github/languages/code-size/davidsonbrsilva/aquascript) ![Status](https://img.shields.io/badge/status-stopped-red)
 
 [[Ver em Português](README.pt-br.md)]
 
@@ -242,4 +242,5 @@ So far, the AquaScript compiler even performs the parsing phase of the source co
 For questions or clarifications, send an email to <davidsobruno@outlook.com>.
 
 ## License
+
 [MIT](LICENSE.md) Copyright (c) 2018 Davidson Bruno da Silva
