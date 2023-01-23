@@ -1,6 +1,6 @@
 # AquaScript
 
-![license](https://img.shields.io/github/license/davidsonbsilva/aquascript.svg) ![Status](https://img.shields.io/badge/status-stopped-red)
+![Licença](https://img.shields.io/github/license/davidsonbsilva/aquascript.svg) ![Code Size](https://img.shields.io/github/languages/code-size/davidsonbrsilva/aquascript) ![Status](https://img.shields.io/badge/status-stopped-red)
 
 [[See in English](README.md)]
 
@@ -242,4 +242,5 @@ Até o momento, o compilador de AquaScript realiza até a fase de análise sint�
 Para dúvidas ou esclarecimentos, envie um e-mail para <davidsobruno@outlook.com>.
 
 ## Licença
+
 [MIT](LICENSE.md) Copyright (c) 2018 Davidson Bruno da Silva
